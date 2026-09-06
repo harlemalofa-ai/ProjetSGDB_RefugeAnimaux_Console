@@ -1,49 +1,34 @@
-# Refuge Animaux — Application Console
+# Refuge Animaux — Application Console C# / PostgreSQL
 
-Projet réalisé par **Harlem Alofa** dans le cadre du projet de développement SGBD.
+Application de gestion d’un refuge animalier réalisée dans le cadre d’un projet de développement SGBD.
 
-Ce dépôt contient la **partie Console** du projet Refuge Animaux.  
-La partie WPF se trouve dans un dépôt séparé : `ProjetSGDB_RefugeAnimauxWPF`.
+Cette partie du projet propose une **interface Console en C#/.NET 8** connectée à une base **PostgreSQL** via **Npgsql**. Elle met en pratique la modélisation de données, l’architecture en couches, les règles métier, les transactions et la validation des données.
 
----
+> La version graphique WPF/MVVM du même projet est disponible dans le dépôt `ProjetSGDB_RefugeAnimauxWPF`.
 
-## Objectif
+## Fonctionnalités principales
 
-L’application permet de gérer les données principales d’un refuge pour animaux depuis une interface Console :
+- gestion des animaux et de leurs fiches détaillées ;
+- gestion des contacts ;
+- entrées et sorties du refuge ;
+- adoptions ;
+- familles d’accueil ;
+- vaccins et vaccinations ;
+- couleurs, rôles et compatibilités ;
+- statistiques ;
+- diagnostic de cohérence des données.
 
-```text
-- animaux
-- contacts
-- entrées et sorties du refuge
-- adoptions
-- familles d’accueil
-- vaccins et vaccinations
-- couleurs
-- rôles
-- compatibilités
-- statistiques
-- diagnostic de cohérence
-```
+## Stack technique
 
----
-
-## Technologies utilisées
-
-```text
 - C#
 - .NET 8
 - PostgreSQL
-- Npgsql
 - SQL
+- Npgsql
 - Visual Studio
 - Git / GitHub
-```
-
----
 
 ## Architecture
-
-L’application est organisée en couches :
 
 ```text
 RefugeAnimaux/
@@ -55,42 +40,15 @@ RefugeAnimaux/
 
 ### Couche métier
 
-Le dossier `classesMetier` contient les classes principales du domaine :
-
-```text
-Animal
-Contact
-Adoption
-FamilleAccueil
-Vaccin
-Vaccination
-Couleur
-Role
-Compatibilite
-AniEntree
-AniSortie
-```
-
-Il contient aussi les classes de validation :
-
-```text
-ValidationDates
-ValidationExistence
-ValidationMetier
-```
+Contient les principales classes du domaine ainsi que les validations métier et de dates.
 
 ### Couche accès aux données
 
-Le dossier `coucheAccesBD` contient l’accès à PostgreSQL avec Npgsql.
-
-La classe `AccesBD.cs` contient les opérations SQL.  
-La classe `ConfigurationConnexion.cs` centralise la configuration de connexion et lit les identifiants depuis des variables d’environnement.
+Centralise les opérations PostgreSQL avec Npgsql. La connexion est configurée via variables d’environnement afin qu’aucun secret ne soit stocké dans le code source.
 
 ### Couche présentation
 
-Le dossier `couchePresentation` contient la classe `Presentation.cs`, qui gère les menus, les saisies, les affichages et les messages d’erreur.
-
----
+Gère les menus Console, les saisies utilisateur, les affichages et les messages d’erreur.
 
 ## Configuration PostgreSQL
 
@@ -100,9 +58,7 @@ La base utilisée s’appelle :
 refuge_animaux
 ```
 
-Aucun mot de passe n’est stocké dans le dépôt.
-
-La façon la plus simple consiste à définir une chaîne complète dans :
+La connexion peut être fournie directement avec :
 
 ```text
 REFUGE_ANIMAUX_DB
@@ -114,7 +70,7 @@ Exemple :
 Host=localhost;Database=refuge_animaux;Username=postgres;Password=VOTRE_MOT_DE_PASSE
 ```
 
-Il est également possible d’utiliser les variables séparées suivantes :
+Ou avec les variables séparées :
 
 ```text
 REFUGE_DB_HOST
@@ -123,88 +79,20 @@ REFUGE_DB_USER
 REFUGE_DB_PASSWORD
 ```
 
-Par défaut, l’hôte, le nom de la base et l’utilisateur valent respectivement `localhost`, `refuge_animaux` et `postgres`. La variable `REFUGE_DB_PASSWORD` est obligatoire si `REFUGE_ANIMAUX_DB` n’est pas définie.
+`REFUGE_DB_PASSWORD` est obligatoire si `REFUGE_ANIMAUX_DB` n’est pas définie.
 
----
+## Points techniques mis en pratique
 
-## Fonctionnalités principales
+- architecture en couches ;
+- accès à PostgreSQL avec Npgsql ;
+- requêtes SQL paramétrées ;
+- transaction pour certaines opérations liées ;
+- règles métier et validations ;
+- gestion de données relationnelles complexes ;
+- séparation des responsabilités ;
+- configuration sensible externalisée.
 
-### Animaux
-
-```text
-- ajouter un animal avec son entrée au refuge dans une transaction
-- consulter les animaux
-- rechercher un animal par identifiant ou par nom
-- afficher une fiche animal détaillée
-- supprimer un animal si les règles le permettent
-```
-
-### Contacts
-
-```text
-- ajouter un contact
-- modifier un contact
-- consulter les contacts
-- consulter les données liées à un contact
-- supprimer un contact si les règles le permettent
-```
-
-### Refuge
-
-```text
-- gérer les entrées
-- gérer les sorties
-- afficher les animaux présents au refuge
-```
-
-### Adoptions et familles d’accueil
-
-```text
-- ajouter une adoption
-- modifier le statut d’une adoption
-- placer un animal en famille d’accueil
-- clôturer une famille d’accueil
-```
-
-### Vaccins, couleurs, rôles et compatibilités
-
-```text
-- ajouter un vaccin
-- vacciner un animal
-- ajouter une couleur
-- associer une couleur à un animal
-- ajouter un rôle
-- associer un rôle à un contact
-- gérer les compatibilités
-```
-
-### Diagnostic
-
-```text
-- statistiques
-- cohérence du refuge
-- diagnostic des anomalies possibles
-```
-
----
-
-## Améliorations apportées
-
-Cette version corrige plusieurs points techniques :
-
-```text
-- connexion PostgreSQL centralisée dans ConfigurationConnexion
-- aucun secret stocké dans le code source
-- connexion recréée proprement par opération
-- ajout animal + entrée dans une transaction
-- lecture des dates rendue plus robuste
-- contrôles de cohérence renforcés
-- .gitignore propre
-```
-
----
-
-## Lancement
+## Exécution
 
 Depuis Visual Studio :
 
@@ -212,23 +100,21 @@ Depuis Visual Studio :
 F5
 ```
 
-Depuis le terminal :
+Ou depuis le terminal :
 
 ```bash
 dotnet run --project RefugeAnimaux
 ```
 
----
+## Améliorations possibles
 
-## Limites restantes
+- séparer davantage la couche d’accès aux données en repositories spécialisés ;
+- découper la classe de présentation en plusieurs composants ;
+- ajouter des tests unitaires ;
+- enrichir les comportements des classes métier.
 
-Le projet est fonctionnel, mais certaines améliorations resteraient possibles :
+## Contexte
 
-```text
-- séparer AccesBD.cs en plusieurs repositories
-- diviser Presentation.cs en plusieurs classes
-- ajouter des tests unitaires
-- ajouter davantage de comportements dans les classes métier
-```
+Projet réalisé par **Harlem Alofa**, étudiant en **Bachelier en Informatique — orientation Développement d’applications**.
 
-Ces limites sont documentées, mais elles ne bloquent pas le fonctionnement du projet.
+Ce dépôt met principalement en évidence des compétences en **C#, .NET, PostgreSQL, SQL, architecture logicielle et développement d’applications métier**.
