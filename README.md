@@ -1,6 +1,6 @@
 # Refuge Animaux — Application Console
 
-Projet réalisé par **Harlem Alofa** dans le cadre du projet de développement SGDB.
+Projet réalisé par **Harlem Alofa** dans le cadre du projet de développement SGBD.
 
 Ce dépôt contient la **partie Console** du projet Refuge Animaux.  
 La partie WPF se trouve dans un dépôt séparé : `ProjetSGDB_RefugeAnimauxWPF`.
@@ -84,7 +84,7 @@ ValidationMetier
 Le dossier `coucheAccesBD` contient l’accès à PostgreSQL avec Npgsql.
 
 La classe `AccesBD.cs` contient les opérations SQL.  
-La classe `ConfigurationConnexion.cs` centralise la chaîne de connexion.
+La classe `ConfigurationConnexion.cs` centralise la configuration de connexion et lit les identifiants depuis des variables d’environnement.
 
 ### Couche présentation
 
@@ -100,16 +100,9 @@ La base utilisée s’appelle :
 refuge_animaux
 ```
 
-Par défaut, l’application utilise :
+Aucun mot de passe n’est stocké dans le dépôt.
 
-```text
-Host=localhost
-Database=refuge_animaux
-Username=postgres
-Password=Jesus2001
-```
-
-La connexion peut être personnalisée avec une variable d’environnement :
+La façon la plus simple consiste à définir une chaîne complète dans :
 
 ```text
 REFUGE_ANIMAUX_DB
@@ -118,10 +111,10 @@ REFUGE_ANIMAUX_DB
 Exemple :
 
 ```text
-Host=localhost;Database=refuge_animaux;Username=postgres;Password=mon_mot_de_passe
+Host=localhost;Database=refuge_animaux;Username=postgres;Password=VOTRE_MOT_DE_PASSE
 ```
 
-Ou avec les variables séparées :
+Il est également possible d’utiliser les variables séparées suivantes :
 
 ```text
 REFUGE_DB_HOST
@@ -129,6 +122,8 @@ REFUGE_DB_NAME
 REFUGE_DB_USER
 REFUGE_DB_PASSWORD
 ```
+
+Par défaut, l’hôte, le nom de la base et l’utilisateur valent respectivement `localhost`, `refuge_animaux` et `postgres`. La variable `REFUGE_DB_PASSWORD` est obligatoire si `REFUGE_ANIMAUX_DB` n’est pas définie.
 
 ---
 
@@ -199,14 +194,11 @@ Cette version corrige plusieurs points techniques :
 
 ```text
 - connexion PostgreSQL centralisée dans ConfigurationConnexion
+- aucun secret stocké dans le code source
 - connexion recréée proprement par opération
 - ajout animal + entrée dans une transaction
-- état animal aligné avec la WPF avec >=
 - lecture des dates rendue plus robuste
-- AjouterVaccin sécurisé avec try/finally
-- GetAnimauxPresentsAuRefuge plus cohérent avec l’état réel
-- contrôle des tables/colonnes autorisées dans Existe()
-- README spécifique Console
+- contrôles de cohérence renforcés
 - .gitignore propre
 ```
 
@@ -230,7 +222,7 @@ dotnet run --project RefugeAnimaux
 
 ## Limites restantes
 
-Le projet est fonctionnel et plus propre, mais certaines améliorations resteraient possibles :
+Le projet est fonctionnel, mais certaines améliorations resteraient possibles :
 
 ```text
 - séparer AccesBD.cs en plusieurs repositories
