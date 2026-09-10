@@ -115,6 +115,6 @@ dotnet run --project RefugeAnimaux
 
 ## Contexte
 
-Projet réalisé par **Harlem Alofa**, étudiant en **Bachelier en Informatique — orientation Développement d’applications**.
+Projet réalisé par **Harlem Kponve Alofa**, étudiant en **Bachelier en Informatique — orientation Développement d’applications**.
 
 Ce dépôt met principalement en évidence des compétences en **C#, .NET, PostgreSQL, SQL, architecture logicielle et développement d’applications métier**.
